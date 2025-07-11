@@ -1,18 +1,18 @@
 {
     "@@locale": "ru",
     "authorization":{
-        "title": "Авторизация",
-        "hint": "Для совершения заказов необходимо войти в систему по номеру телефона",
-        "loginButton" : "Войти"
+        "title":"Авторизация",
+        "hint":"Для совершения заказов необходимо войти в систему по номеру телефона",
+        "loginButton":"Войти"
     },
     "authorizationInputPhone":{
         "title":"Введите номер телефона",
-        "sendCodeButton" : "Отправить код подтверждения",
-        "placeholder": "+7 (999) 999 99-99"
+        "sendCodeButton":"Отправить код подтверждения",
+        "placeholder":"+7 (999) 999 99-99"
     },
     "authorizationCodeVerify":{
         "title":"Введите код подтверждения",
-        "codeResend" : "Отправить код подтверждения повторно",
+        "codeResend":"Отправить код подтверждения повторно",
         "acceptButton":"Войти"
     },
     "favorites":{
@@ -24,15 +24,35 @@
         "title":"Корзина",
         "selectPickUpPoint":"Выберите пункт выдачи заказа",
         "deleteChooseTmc":"Удалить выбранные",
-        "placeAnOrder":"Оформить заказ"
+        "placeAnOrder":"Оформить заказ",
+        "placeLenin46":"Ул. Ленина, д. 46",
+        "placeKomsomolsk33":"пр-кт Комсомольский, д. 33",
+        "placePushkin6":"Ул. Пушкина, д. 6",
+        "placePavlov932":"Павловский тракт, д. 932"
     },
     "catalog":{
         "hint":"Начните вводить название товара",
+        "titlePageOpenCatalog":"Категория товаров"
     },
     "mainPage": {
         "promotionalItem":"Акционный товар",
         "productsOfTheWeek":"Товары недели",
         "hurryToBuy":"Успей купить!"
-    }
+    },
+    "profile":{
+        "currentOrders":"Текущие заказы",
+        "completedOrders":"Завершенные заказы",
+        "productAssembly":"Сборка",
+        "readyForPickup":"Готов к выдаче",
+        "pending":"На рассмотрении",
+        "placingAnOrder":"Оформление заказа ",
+        "units":"шт.",
+        "totalOrderAmount":"Итоговая сумма заказа:",
+        "order":"Заказать",
+        "prescriptionRequired":"Для получения заказа вам необходимо будет предоставить рецепт от врача",
+        "completedOrder":"Выполнен"
+    },
+    "searchHint":"Начните вводить название товара"
+
 
 }

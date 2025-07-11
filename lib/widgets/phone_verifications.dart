@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
 class PhoneVerificationView extends StatelessWidget {
-  // 1. Просто строка для отображения номера
+  // Просто строка для отображения номера
   final String phoneNumber;
-  // 2. Контроллер для поля ввода КОДА
+  // Контроллер для поля ввода КОДА
   final TextEditingController codeController;
-  // 3. Колбэки для КАЖДОЙ кнопки
+  // Колбэки для КАЖДОЙ кнопки
   final VoidCallback onVerifyAndLoginPressed; // Кнопка "Войти"
   final VoidCallback onResendCodePressed;     // Кнопка "Отправить повторно"
 
