@@ -1,0 +1,17 @@
+{
+    "@@locale": "ru",
+    "authorization":{
+        "title": "Авторизация",
+        "hint": "Для совершения заказов необходимо войти в систему по номеру телефона",
+        "loginButton" : "Войти"
+    },
+    "authorizationInputPhone":{
+        "title":"Введите номер телефона",
+        "sendCodeButton" : "Отправить код подтверждения",
+        "placeholder": "+7 (999) 999 99-99"
+    },
+    "authorizationCodeVerify":{
+        "title":"Введите код подтверждения"
+    }
+
+}
