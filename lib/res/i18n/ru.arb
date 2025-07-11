@@ -37,7 +37,8 @@
     "mainPage": {
         "promotionalItem":"Акционный товар",
         "productsOfTheWeek":"Товары недели",
-        "hurryToBuy":"Успей купить!"
+        "hurryToBuy":"Успей купить!",
+        "addTmcBasket":"Добавить товар в корзину"
     },
     "profile":{
         "currentOrders":"Текущие заказы",
@@ -45,7 +46,7 @@
         "productAssembly":"Сборка",
         "readyForPickup":"Готов к выдаче",
         "pending":"На рассмотрении",
-        "placingAnOrder":"Оформление заказа ",
+        "placingAnOrder":"Оформление заказа",
         "units":"шт.",
         "totalOrderAmount":"Итоговая сумма заказа:",
         "order":"Заказать",
