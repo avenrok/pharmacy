@@ -11,7 +11,28 @@
         "placeholder": "+7 (999) 999 99-99"
     },
     "authorizationCodeVerify":{
-        "title":"Введите код подтверждения"
+        "title":"Введите код подтверждения",
+        "codeResend" : "Отправить код подтверждения повторно",
+        "acceptButton":"Войти"
+    },
+    "favorites":{
+        "title":"Избранное",
+        "addToBasket":"Добавить в корзину",
+        "prescriptionRequired":"Товар отпускается по рецепту"
+    },
+    "basket":{
+        "title":"Корзина",
+        "selectPickUpPoint":"Выберите пункт выдачи заказа",
+        "deleteChooseTmc":"Удалить выбранные",
+        "placeAnOrder":"Оформить заказ"
+    },
+    "catalog":{
+        "hint":"Начните вводить название товара",
+    },
+    "mainPage": {
+        "promotionalItem":"Акционный товар",
+        "productsOfTheWeek":"Товары недели",
+        "hurryToBuy":"Успей купить!"
     }
 
 }
