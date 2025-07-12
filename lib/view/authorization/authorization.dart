@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pharmacy/widgets/initial_view.dart';
 import 'package:pharmacy/widgets/phone_input.dart';
 import 'package:pharmacy/widgets/phone_verifications.dart';
+import 'package:pharmacy/view/main_page/main_page.dart';
 
 enum AuthState { initial, phoneInput, phoneVerifications }
 
@@ -33,20 +34,26 @@ class _AuthorizationState extends State<Authorization> {
       _authState = AuthState.phoneInput;
     });
   }
-  void _verifyCode() {
+
+   void _verifyAndNavigateToMain() {
     final code = _codeController.text;
     print('Проверяем код: $code');
-    // Здесь будет логика проверки кода:
-    // если код верный -> переход на главный экран приложения
-    // если неверный -> показать ошибку
-    
-    // Например, после успешной верификации:
-    // Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => HomePage()));
+    // Здесь будет реальная логика проверки кода:
+    // если код верный -> выполняем навигацию
+    // если неверный -> показываем ошибку (не реализовано здесь)
 
-    setState(() {
-      _codeController.clear();
-      _authState = AuthState.phoneInput;
-    });
+    // При успешной верификации:
+    _codeController.clear(); // Очищаем поле кода
+    // ИСПРАВЛЕНИЕ: Выполняем переход на MainScreen
+    Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (_) => const MainScreen()));
+  }
+
+  void _resendCode() {
+    print('Отправляем код повторно на номер: ${_phoneController.text}');
+    // В реальном приложении здесь будет API вызов для повторной отправки
+    // Возможно, сброс таймера или что-то еще.
+    // _codeController.clear(); // Опционально очистить поле кода
+    // Можно также остаться на текущем состоянии PhoneVerificationView
   }
 
 
@@ -77,14 +84,15 @@ class _AuthorizationState extends State<Authorization> {
        return PhoneVerificationView(
         phoneNumber: _phoneController.text,
         codeController: _codeController,
-        onVerifyAndLoginPressed: _sendCode,
-        onResendCodePressed: _verifyCode);        
+        onVerifyAndLoginPressed: _verifyAndNavigateToMain,
+        onResendCodePressed: _resendCode);        
     }
   }
 
   @override
   void dispose() {
     _phoneController.dispose();
+    _codeController.dispose();
     super.dispose();
   }
 }

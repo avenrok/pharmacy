@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+// import 'package:pharmacy/view/main_page/main_page.dart';
 
 class PhoneVerificationView extends StatelessWidget {
   // Просто строка для отображения номера
@@ -47,7 +48,7 @@ class PhoneVerificationView extends StatelessWidget {
             style: ElevatedButton.styleFrom(
               padding: const EdgeInsets.symmetric(vertical: 16),
             ),
-            onPressed: onVerifyAndLoginPressed, // Используем колбэк для входа
+            onPressed:onVerifyAndLoginPressed,
             child: const Text('Войти', style: TextStyle(fontSize: 18)),
           ),
           const SizedBox(height: 12),

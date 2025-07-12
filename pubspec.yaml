@@ -7,6 +7,7 @@ environment:
   sdk: ^3.6.0
 
 dependencies:
+  flutter_svg: ^2.0.10+1
   flutter:
     sdk: flutter
   flutter_localizations:
@@ -16,10 +17,36 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^5.0.0
+  
 
 flutter:
   generate: true
   uses-material-design: true
+  assets:
+    - lib/res/navigation_bar/image_basket_active.svg
+    - lib/res/navigation_bar/image_basket.svg
+    - lib/res/navigation_bar/image_catalog_active.svg
+    - lib/res/navigation_bar/image_catalog.svg
+    - lib/res/navigation_bar/image_favorite_active.svg
+    - lib/res/navigation_bar/image_favorites.svg
+    - lib/res/navigation_bar/image_main_active.svg
+    - lib/res/navigation_bar/image_main.svg
+    - lib/res/navigation_bar/image_profile_active.svg
+    - lib/res/navigation_bar/image_profile.svg
+    - lib/res/icons/alert.svg
+    - lib/res/icons/check.svg
+    - lib/res/icons/favorites_add.svg
+    - lib/res/icons/favorites.svg
+    - lib/res/icons/sale25.svg
+    - lib/res/icons/tmc.svg
+    - lib/res/icons/valutRu.svg
+    - lib/res/icons/map/komsomol33.svg
+    - lib/res/icons/map/lenin46.svg
+    - lib/res/icons/map/onlymap.svg
+    - lib/res/icons/map/pavlov932.svg
+    - lib/res/icons/map/pushkin6.svg
+
+
   fonts:
   - family: FiraSans
     fonts:
