@@ -20,8 +20,8 @@ class _AuthorizationState extends State<Authorization> {
 
   // Логика перехода на экран верификации
   void _sendCode() {
-    final phoneNumber = _phoneController.text;
-    print('Отправляем код на номер: $phoneNumber');
+    // final phoneNumber = _phoneController.text;
+    // print('Отправляем код на номер: $phoneNumber');
     
      setState(() {
             _authState = AuthState.phoneVerifications;
@@ -36,8 +36,8 @@ class _AuthorizationState extends State<Authorization> {
   }
 
    void _verifyAndNavigateToMain() {
-    final code = _codeController.text;
-    print('Проверяем код: $code');
+    // final code = _codeController.text;
+    // print('Проверяем код: $code');
     // Здесь будет реальная логика проверки кода:
     // если код верный -> выполняем навигацию
     // если неверный -> показываем ошибку (не реализовано здесь)
@@ -49,7 +49,7 @@ class _AuthorizationState extends State<Authorization> {
   }
 
   void _resendCode() {
-    print('Отправляем код повторно на номер: ${_phoneController.text}');
+    // print('Отправляем код повторно на номер: ${_phoneController.text}');
     // В реальном приложении здесь будет API вызов для повторной отправки
     // Возможно, сброс таймера или что-то еще.
     // _codeController.clear(); // Опционально очистить поле кода

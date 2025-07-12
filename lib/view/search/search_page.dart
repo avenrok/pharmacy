@@ -3,14 +3,14 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacy/widgets/product_card.dart'; 
 
-class SearchPageContent extends StatefulWidget {
-  const SearchPageContent({super.key});
+class Search extends StatefulWidget {
+  const Search({super.key});
 
   @override
-  State<SearchPageContent> createState() => _SearchPageContentState();
+  State<Search> createState() => _SearchState();
 }
 
-class _SearchPageContentState extends State<SearchPageContent> {
+class _SearchState extends State<Search> {
   final List<String> _recentSearches = [
     'Строка поиска 1',
     'Строка поиска 2',
@@ -60,7 +60,7 @@ class _SearchPageContentState extends State<SearchPageContent> {
                     padding: const EdgeInsets.symmetric(vertical: 4.0),
                     child: GestureDetector(
                       onTap: () {
-                        print('Выбран недавний поиск: $search');
+                        // print('Выбран недавний поиск: $search');
                       },
                       child: Text(
                         search,
@@ -125,12 +125,18 @@ class Product {
   final String name;
   final String price;
   final String oldPrice;
-  final bool isNew; // Для отображения звездочки "Акционный товар"
+  final bool isNew; 
+  final bool requiresPrescription; 
+  final int? discountPercentage; 
+  final bool isActionProduct; 
 
-  Product({
+  const Product({
     required this.name,
     required this.price,
-    required this.oldPrice,
-    this.isNew = false, // По умолчанию не новинка
+    this.oldPrice = '',
+    this.isNew = false,
+    this.requiresPrescription = false,
+    this.discountPercentage,
+    this.isActionProduct = false,
   });
 }

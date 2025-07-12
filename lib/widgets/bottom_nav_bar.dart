@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 
 class CustomBottomNavBar extends StatelessWidget {
   final int selectedIndex;
@@ -23,12 +22,12 @@ class CustomBottomNavBar extends StatelessWidget {
       items: <BottomNavigationBarItem>[
         BottomNavigationBarItem(
           icon: Image.asset(
-            'lib/res/navigation_bar/image_main.svg',
+            'lib/res/navigation_bar/image_main.png',
             width: 25,
             height: 25,
           ),
           activeIcon: Image.asset(
-            "lib/res/navigation_bar/image_main_active.svg",
+            "lib/res/navigation_bar/image_main_active.png",
             width: 25,
             height: 25,
           ),
@@ -36,12 +35,12 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon:  Image.asset(
-            'lib/res/navigation_bar/image_catalog.svg',
+            'lib/res/navigation_bar/image_catalog.png',
             width: 25,
             height: 25,
           ),
           activeIcon: Image.asset(
-            "lib/res/navigation_bar/image_catalog_active.svg",
+            "lib/res/navigation_bar/image_catalog_active.png",
             width: 25,
             height: 25,
           ),
@@ -49,12 +48,12 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Image.asset(
-            "lib/res/navigation_bar/image_basket.svg",
+            "lib/res/navigation_bar/image_basket.png",
             width: 25,
             height: 25,
           ),
           activeIcon: Image.asset(
-            "lib/res/navigation_bar/image_basket_active.svg",
+            "lib/res/navigation_bar/image_basket_active.png",
             width: 25,
             height: 25,
           ),
@@ -62,12 +61,12 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Image.asset(
-            "lib/res/navigation_bar/image_favorites.svg",
+            "lib/res/navigation_bar/image_favorites.png",
             width: 25,
             height: 25,
           ),
           activeIcon: Image.asset(
-            "lib/res/navigation_bar/image_favorite_active.svg",
+            "lib/res/navigation_bar/image_favorite_active.png",
             width: 25,
             height: 25,
           ),
@@ -75,12 +74,12 @@ class CustomBottomNavBar extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Image.asset(
-            "lib/res/navigation_bar/image_profile.svg",
+            "lib/res/navigation_bar/image_profile.png",
             width: 25,
             height: 25,
           ),
           activeIcon: Image.asset(
-            "lib/res/navigation_bar/image_favorite_active.svg",
+            "lib/res/navigation_bar/image_favorite_active.png",
             width: 25,
             height: 25,
           ),
