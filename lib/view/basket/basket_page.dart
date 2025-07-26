@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pharmacy/theme/app_colors.dart';
 import 'package:pharmacy/res/styles/styles.dart'; 
 import 'package:pharmacy/view/search/search_page.dart'; 
+import 'package:pharmacy/view/profile/order_page.dart';
 
 class BasketPage extends StatefulWidget {
   const BasketPage({super.key});
@@ -90,8 +91,6 @@ class _BasketPageState extends State<BasketPage> {
     double total = 0.0;
     for (var item in _cartItems) {
       if (item.isSelected) {
-        // Пример парсинга цены (предполагаем, что цена в формате "X XXX,YY ₽")
-        // Это упрощенная логика, в реальном проекте используйте более надежный парсинг
         try {
           String priceString = item.product.price.replaceAll(' ', '').replaceAll('₽', '').replaceAll(',', '.');
           double price = double.parse(priceString);
@@ -123,7 +122,7 @@ class _BasketPageState extends State<BasketPage> {
               Container(
                 padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.textHint.withOpacity(0.5)),
+                  border: Border.all(color: AppColors.textHint.withValues(alpha: 0.5)),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
@@ -212,7 +211,7 @@ class _BasketPageState extends State<BasketPage> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.success.withOpacity(0.1),
+                                  color: AppColors.success.withValues(alpha:0.1),
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(color: AppColors.success),
                                 ),
@@ -268,7 +267,7 @@ class _BasketPageState extends State<BasketPage> {
             color: Theme.of(context).scaffoldBackgroundColor, // Используем цвет фона Scaffold
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.2),
+                color: Colors.grey.withValues(alpha: 0.2),
                 spreadRadius: 2,
                 blurRadius: 5,
                 offset: const Offset(0, -3), // Тень сверху
@@ -281,9 +280,18 @@ class _BasketPageState extends State<BasketPage> {
                 Expanded(
                   child: ElevatedButton(
                     onPressed: () {
-                      // Логика оформления заказа
-                      // print('Оформить заказ на сумму: ${_calculateTotalPrice()}');
-                  
+                      _cartItems
+                          .where((item) => item.isSelected)
+                          .map((item) => item.product)
+                          .toList();
+
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => Order(
+                          ),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: AppColors.success,

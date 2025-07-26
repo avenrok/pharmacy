@@ -121,7 +121,7 @@ class _FavoritesState extends State<Favorites> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: AppColors.success.withOpacity(0.1),
+                                    color: AppColors.success.withValues(alpha:0.1),
                                     borderRadius: BorderRadius.circular(5),
                                     border: Border.all(color: AppColors.success),
                                   ),

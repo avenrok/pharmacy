@@ -14,8 +14,10 @@ class Pharmacy extends StatelessWidget {
       title: 'Flutter Auth Demo',
       theme: ThemeData(
         splashColor: const Color.fromARGB(255, 18, 184, 26),
+        scaffoldBackgroundColor: Colors.white,
         useMaterial3: true,
       ),
+      
       home: const Authorization(), // Начинаем с экрана авторизации
     );
   }

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class AppColors {
   // Кнопки
-  static const Color button = Color(0x002c992c);
+  static const Color button = Color.fromARGB(0, 43, 147, 43);
   
   // Текст
   static const Color textPrimary = Color(0xFF000000);

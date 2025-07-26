@@ -46,6 +46,7 @@ flutter:
     - lib/res/icons/avatar.png
     - lib/res/icons/image_notification.png
     - lib/res/icons/favorites_add.png
+    - lib/res/icons/tmc2.png
 
 
   fonts:

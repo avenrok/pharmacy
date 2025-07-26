@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:pharmacy/theme/app_colors.dart'; 
+import 'package:pharmacy/theme/app_colors.dart';
+import 'package:pharmacy/res/styles/styles.dart';
 
 class Profile extends StatelessWidget {
   const Profile({super.key});
@@ -10,36 +11,13 @@ class Profile extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Блок с информацией о пользователе
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Row(
-              children: [
-                  CircleAvatar(
-                    radius: 30,
-                    backgroundImage: const AssetImage("lib/res/icons/avatar.png"),
-                    onBackgroundImageError: (exception, stackTrace) {
-                    },
-                  ),
-                const SizedBox(width: 16),
-                const Text(
-                  'Фамилия Имя', // Здесь будет реальное имя пользователя
-                  style: TextStyle(
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          const Divider(), 
+          const Divider(),
           // Секция "Текущие заказы"
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0), // Немного больше отступ сверху
             child: Text(
               'Текущие заказы',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: AppTextStyles.headline.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           _buildOrderList(context, true), // true для текущих заказов
@@ -47,26 +25,28 @@ class Profile extends StatelessWidget {
 
           // Секция "Завершенные заказы"
           Padding(
-            padding: const EdgeInsets.all(16.0),
+            padding: const EdgeInsets.fromLTRB(16.0, 16.0, 16.0, 8.0), // Немного больше отступ сверху
             child: Text(
               'Завершенные заказы',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(fontWeight: FontWeight.bold),
+              style: AppTextStyles.headline.copyWith(fontWeight: FontWeight.bold),
             ),
           ),
           _buildOrderList(context, false), // false для завершенных заказов
           const SizedBox(height: 16),
+
         ],
       ),
     );
   }
 
   Widget _buildOrderList(BuildContext context, bool isCurrent) {
+    // Демо-данные для заказов
     final List<Map<String, dynamic>> orders = [
       {
         'id': '12345786',
         'status': isCurrent ? 'сборка' : 'готов к выдаче',
         'address': isCurrent ? 'ул. Ленина, д. ...' : 'ул. Пушкина, д...',
-        'isBordered': isCurrent, 
+        'isBordered': isCurrent,
       },
       {
         'id': '12345787',
@@ -74,10 +54,11 @@ class Profile extends StatelessWidget {
         'address': isCurrent ? 'ул. Павловский...' : 'ул. Гоголя, д...',
         'isBordered': isCurrent,
       },
+      // Добавьте больше заказов по мере необходимости
     ];
 
     return SizedBox(
-      height: 220, // Фиксированная высота для Horizontal ListView
+      height: 220,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -85,18 +66,18 @@ class Profile extends StatelessWidget {
         itemBuilder: (context, index) {
           final order = orders[index];
           return Container(
-            width: 180, // Ширина одной карточки заказа
+            width: 180,
             margin: const EdgeInsets.only(right: 16.0),
             decoration: BoxDecoration(
               border: Border.all(
-                color: order['isBordered'] ? Colors.red : Colors.grey[300]!, // Красная рамка для текущих
+                color: order['isBordered'] ? AppColors.error : Colors.grey[300]!,
                 width: order['isBordered'] ? 2.0 : 1.0,
               ),
               borderRadius: BorderRadius.circular(8.0),
               color: Colors.white,
               boxShadow: [
                 BoxShadow(
-                  color: Colors.grey.withOpacity(0.1),
+                  color: Colors.grey.withValues(alpha: 0.1),
                   spreadRadius: 1,
                   blurRadius: 5,
                   offset: const Offset(0, 3),
@@ -109,7 +90,7 @@ class Profile extends StatelessWidget {
                 Expanded(
                   child: Center(
                     child: Image.asset(
-                      "lib/res/icons/tmc.png", // Изображение-заполнитель для заказа
+                      "lib/res/icons/tmc.png",
                       width: 60,
                       height: 60,
                     ),
@@ -119,16 +100,15 @@ class Profile extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   child: Text(
                     '№ ${order['id']}',
-                    style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+                    style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   child: Text(
                     order['status'],
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: order['isBordered'] ? Colors.red : Colors.green[700], // Цвет статуса
+                    style: AppTextStyles.bodyText.copyWith(
+                      color: order['isBordered'] ? AppColors.error : AppColors.success,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -137,7 +117,7 @@ class Profile extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
                   child: Text(
                     order['address'],
-                    style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                    style: AppTextStyles.caption.copyWith(color: Colors.grey[600]),
                     maxLines: 2,
                     overflow: TextOverflow.ellipsis,
                   ),

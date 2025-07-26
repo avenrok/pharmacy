@@ -13,19 +13,19 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  bool _isFavorite = false; // Состояние "Избранное" для этого конкретного товара
-
+  bool _isFavorite = false; 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop(); // Возвращаемся на предыдущий экран
+            Navigator.of(context).pop(); 
           },
         ),
-        title: const Text('Страница товара'), // Заголовок страницы детализации
+        title: const Text('Страница товара'), 
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -37,9 +37,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
                 child: Image.asset( 
-                  "lib/res/icons/tmc.png", 
-                  width: 200,
-                  height: 200,
+                  "lib/res/icons/tmc2.png", 
+                  width: 400,
+                  height: 400,
                 ),
               ),
             ),
@@ -57,13 +57,22 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center, // Центрируем цены
+                mainAxisAlignment: MainAxisAlignment.start, // Центрируем цены
                 children: [
+                  const SizedBox(width: 16),
                   Text(
-                    widget.product.price,
+                    widget.product.price.split(' ')[0],
                     style: AppTextStyles.headline.copyWith(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(width: 10),
+                  const SizedBox(width: 8.0), // Маленький отступ между числом и значком рубля
+                  // Значок красного рубля
+                  Image.asset(
+                    'lib/res/icons/valutRu.png',
+                    width: 25,
+                    height: 25,
+                    color: AppColors.error, // Красный цвет для иконки
+                  ),
+                  const SizedBox(width: 64),
                   if (widget.product.oldPrice.isNotEmpty) // Показываем старую цену, если она есть
                     Text(
                       widget.product.oldPrice,
@@ -93,11 +102,11 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   children: [
-                    const Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 20),
+                    const Icon(Icons.warning_amber_rounded, color: AppColors.textPrimary, size: 32),
                     const SizedBox(width: 8),
                     Text(
                       'Товар отпускается по рецепту',
-                      style: AppTextStyles.bodyText.copyWith(color: AppColors.warning),
+                      style: AppTextStyles.bodyText.copyWith(color: AppColors.textPrimary),
                     ),
                   ],
                 ),
@@ -111,7 +120,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 style: AppTextStyles.bodyText,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 64),
             // Кнопка "Добавить товар в корзину" и звездочка "Избранное"
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
@@ -120,8 +129,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   Expanded(
                     child: ElevatedButton(
                       onPressed: () {
-                        // Логика добавления в корзину
-                        // print('Добавить ${widget.product.name} в корзину');
+
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.success, // Зеленая кнопка
@@ -141,7 +149,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     onTap: () {
                       setState(() {
                         _isFavorite = !_isFavorite;
-                        // print('Product ${widget.product.name} is now favorite: $_isFavorite');
                       });
                     },
                     child: Image.asset(

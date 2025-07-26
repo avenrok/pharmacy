@@ -45,4 +45,11 @@ class AppTextStyles {
     fontStyle: FontStyle.normal,
     color: Colors.white,
   );
+
+  static const TextStyle caption = TextStyle(
+    fontFamily: 'FiraSans',
+    fontSize: 10,          
+    fontWeight: FontWeight.w400,
+    color: AppColors.textPrimary, 
+  );
 }
