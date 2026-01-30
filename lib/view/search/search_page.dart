@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy/data/app_config.dart';
 import 'package:pharmacy/data/product_api.dart';
 import 'package:pharmacy/widgets/product_card.dart';
 import 'package:pharmacy/res/styles/styles.dart';
@@ -23,7 +24,7 @@ class _SearchState extends State<Search> {
   bool _isSearchFocused = false;
 
   final ProductApi _api = ProductApi(
-    baseUrl: 'https://your-api.com',
+    baseUrl: AppConfig.apiBaseUrl,
   );
 
   List<Product> _actionProducts = const [];

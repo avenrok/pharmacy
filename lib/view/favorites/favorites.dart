@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/theme/app_colors.dart';
 import 'package:pharmacy/res/styles/styles.dart';
-import 'package:pharmacy/view/search/search_page.dart';
+// import 'package:pharmacy/view/search/search_page.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});
