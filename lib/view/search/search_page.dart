@@ -1,49 +1,51 @@
 import 'package:flutter/material.dart';
-import 'package:pharmacy/widgets/product_card.dart'; 
+import 'package:pharmacy/data/product_api.dart';
+import 'package:pharmacy/widgets/product_card.dart';
 import 'package:pharmacy/res/styles/styles.dart';
 import 'package:pharmacy/theme/app_colors.dart';
+import 'package:pharmacy/models/product.dart';
 
 class Search extends StatefulWidget {
   final FocusNode focusNode;
-  final List<String> recentSearches; 
+  final List<String> recentSearches;
 
   const Search({
     super.key,
-    required this.focusNode, 
+    required this.focusNode,
     required this.recentSearches,
-    });
+  });
 
-
- @override
- State<Search> createState() => _SearchState();
+  @override
+  State<Search> createState() => _SearchState();
 }
 
-
 class _SearchState extends State<Search> {
-
   bool _isSearchFocused = false;
 
- final List<Product> _actionProducts = const [
-  Product(name: 'Название товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽', discountPercentage: 25, isActionProduct: true),
-  Product(name: 'Название товара', price: '750,00 ₽', oldPrice: '900,00 ₽', discountPercentage: 15, isActionProduct: true),
- ];
+  final ProductApi _api = ProductApi(
+    baseUrl: 'https://your-api.com',
+  );
 
+  List<Product> _actionProducts = const [];
+  bool _isLoadingActionProducts = false;
+  String? _errorActionProducts;
 
- final List<Product> _weeklyProducts = const [
-  Product(name: 'Название товара', price: '800,00 ₽', oldPrice: '950,00 ₽'),
-  Product(name: 'Название товара', price: '600,00 ₽', oldPrice: '700,00 ₽'),
- ];
+  List<Product> _weeklyProducts = const [];
+  bool _isLoadingWeeklyProducts = false;
+  String? _errorWeeklyProducts;
 
-
- final List<Product> _hurryToBuyProducts = const [
-  Product(name: 'Название товара', price: '450,00 ₽', oldPrice: '500,00 ₽', discountPercentage: 10),
-  Product(name: 'Название товара', price: '300,00 ₽', oldPrice: '350,00 ₽'),
- ];
+  List<Product> _hurryToBuyProducts = const [];
+  bool _isLoadingHurryToBuyProducts = false;
+  String? _errorHurryToBuyProducts;
 
   @override
   void initState() {
     super.initState();
     widget.focusNode.addListener(_handleFocusChange);
+    // Вызываем загрузку товаров
+    _loadActionProducts();
+    _loadWeeklyProducts();
+    _loadHurryToBuyProducts();
   }
 
   @override
@@ -58,7 +60,73 @@ class _SearchState extends State<Search> {
     });
   }
 
-   @override
+  Future<void> _loadActionProducts() async {
+    setState(() {
+      _isLoadingActionProducts = true;
+      _errorActionProducts = null;
+    });
+
+    try {
+      final products = await _api.fetchActionProducts();
+      setState(() {
+        _actionProducts = products;
+      });
+    } catch (e) {
+      setState(() {
+        _errorActionProducts = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoadingActionProducts = false;
+      });
+    }
+  }
+
+  Future<void> _loadWeeklyProducts() async {
+    setState(() {
+      _isLoadingWeeklyProducts = true;
+      _errorWeeklyProducts = null;
+    });
+
+    try {
+      final products = await _api.fetchWeeklyProducts();
+      setState(() {
+        _weeklyProducts = products;
+      });
+    } catch (e) {
+      setState(() {
+        _errorWeeklyProducts = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoadingWeeklyProducts = false;
+      });
+    }
+  }
+
+  Future<void> _loadHurryToBuyProducts() async {
+    setState(() {
+      _isLoadingHurryToBuyProducts = true;
+      _errorHurryToBuyProducts = null;
+    });
+
+    try {
+      final products = await _api.fetchHurryToBuyProducts();
+      setState(() {
+        _hurryToBuyProducts = products;
+      });
+    } catch (e) {
+      setState(() {
+        _errorHurryToBuyProducts = e.toString();
+      });
+    } finally {
+      setState(() {
+        _isLoadingHurryToBuyProducts = false;
+      });
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16.0),
@@ -67,12 +135,28 @@ class _SearchState extends State<Search> {
         children: [
           if (_isSearchFocused && widget.recentSearches.isNotEmpty)
             _buildRecentSearches(),
-
           if (!_isSearchFocused) ...[
             const SizedBox(height: 16.0),
-            _buildProductSection(title: 'Акционный товар', products: _actionProducts),
-            _buildProductSection(title: 'Товары недели', products: _weeklyProducts),
-            _buildProductSection(title: 'Успей купить!', products: _hurryToBuyProducts),
+            if (_isLoadingActionProducts ||
+                _isLoadingWeeklyProducts ||
+                _isLoadingHurryToBuyProducts)
+              const Center(child: CircularProgressIndicator())
+            else if (_errorActionProducts != null)
+              Text(_errorActionProducts!,
+                  style: const TextStyle(color: Colors.red))
+            else if (_errorWeeklyProducts != null)
+              Text(_errorWeeklyProducts!,
+                  style: const TextStyle(color: Colors.red))
+            else if (_errorHurryToBuyProducts != null)
+              Text(_errorHurryToBuyProducts!,
+                  style: const TextStyle(color: Colors.red))
+            else
+              _buildProductSection(
+                  title: 'Акционный товар', products: _actionProducts),
+            _buildProductSection(
+                title: 'Товары недели', products: _weeklyProducts),
+            _buildProductSection(
+                title: 'Успей купить!', products: _hurryToBuyProducts),
             const SizedBox(height: 16.0),
           ],
         ],
@@ -80,7 +164,7 @@ class _SearchState extends State<Search> {
     );
   }
 
-Widget _buildRecentSearches() {
+  Widget _buildRecentSearches() {
     return Padding(
       padding: const EdgeInsets.only(top: 8.0),
       child: Column(
@@ -99,7 +183,8 @@ Widget _buildRecentSearches() {
               final search = widget.recentSearches[index];
               return InkWell(
                 onTap: () {
-                  widget.focusNode.unfocus(); // Закрываем недавние поиски после выбора
+                  widget.focusNode
+                      .unfocus(); // Закрываем недавние поиски после выбора
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -115,8 +200,7 @@ Widget _buildRecentSearches() {
     );
   }
 
-
- Widget _buildProductSection({
+  Widget _buildProductSection({
     required String title,
     required List<Product> products,
   }) {
@@ -133,7 +217,8 @@ Widget _buildRecentSearches() {
           children: [
             Text(
               title,
-              style: AppTextStyles.headline.copyWith(fontWeight: FontWeight.bold, color: AppColors.error),
+              style: AppTextStyles.headline.copyWith(
+                  fontWeight: FontWeight.bold, color: AppColors.error),
             ),
             const SizedBox(height: 12.0),
             GridView.builder(
@@ -156,24 +241,4 @@ Widget _buildRecentSearches() {
       ),
     );
   }
-}
-
-class Product {
-  final String name;
-  final String price;
-  final String oldPrice;
-  final bool isNew;
-  final bool requiresPrescription;
-  final int? discountPercentage; 
-  final bool isActionProduct; 
-
-  const Product({ 
-    required this.name,
-    required this.price,
-    this.oldPrice = '',
-    this.isNew = false,
-    this.requiresPrescription = false,
-    this.discountPercentage, 
-    this.isActionProduct = false, 
-  });
 }

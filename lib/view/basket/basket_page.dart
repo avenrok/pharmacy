@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/theme/app_colors.dart';
-import 'package:pharmacy/res/styles/styles.dart'; 
-import 'package:pharmacy/view/search/search_page.dart'; 
+import 'package:pharmacy/res/styles/styles.dart';
+// import 'package:pharmacy/view/search/search_page.dart';
 import 'package:pharmacy/view/profile/order_page.dart';
 
 class BasketPage extends StatefulWidget {
@@ -16,19 +17,34 @@ class _BasketPageState extends State<BasketPage> {
   // В реальном приложении это будет из State Management (Provider, BLoC, Riverpod и т.д.)
   final List<CartItem> _cartItems = [
     CartItem(
-      product: Product(name: 'Название товара в несколько строк, а также объем или штучность товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
+      product: Product(
+          name:
+              'Название товара в несколько строк, а также объем или штучность товара',
+          price: '999,99 ₽',
+          oldPrice: '1 299,99 ₽',
+          id: 1),
       quantity: 1,
       isSelected: false,
       requiresPrescription: false,
     ),
     CartItem(
-      product: Product(name: 'Название товара в несколько строк, а также объем или штучность товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
+      product: Product(
+          name:
+              'Название товара в несколько строк, а также объем или штучность товара',
+          price: '999,99 ₽',
+          oldPrice: '1 299,99 ₽',
+          id: 2),
       quantity: 1,
       isSelected: true, // Этот товар выбран по умолчанию, как на макете
       requiresPrescription: false,
     ),
     CartItem(
-      product: Product(name: 'Название товара в несколько строк, а также объем или штучность товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
+      product: Product(
+          name:
+              'Название товара в несколько строк, а также объем или штучность товара',
+          price: '999,99 ₽',
+          oldPrice: '1 299,99 ₽',
+          id: 3),
       quantity: 1,
       isSelected: false,
       requiresPrescription: true, // Пример товара по рецепту
@@ -67,7 +83,8 @@ class _BasketPageState extends State<BasketPage> {
   void _updateQuantity(int index, int delta) {
     setState(() {
       int newQuantity = _cartItems[index].quantity + delta;
-      if (newQuantity > 0) { // Количество не может быть меньше 1
+      if (newQuantity > 0) {
+        // Количество не может быть меньше 1
         _cartItems[index].quantity = newQuantity;
       } else {
         // Опционально: удалить товар, если количество стало 0
@@ -92,7 +109,10 @@ class _BasketPageState extends State<BasketPage> {
     for (var item in _cartItems) {
       if (item.isSelected) {
         try {
-          String priceString = item.product.price.replaceAll(' ', '').replaceAll('₽', '').replaceAll(',', '.');
+          String priceString = item.product.price
+              .replaceAll(' ', '')
+              .replaceAll('₽', '')
+              .replaceAll(',', '.');
           double price = double.parse(priceString);
           total += price * item.quantity;
         } catch (e) {
@@ -115,20 +135,25 @@ class _BasketPageState extends State<BasketPage> {
             children: [
               Text(
                 'Укажите пункт выдачи заказа',
-                style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold),
+                style: AppTextStyles.bodyText
+                    .copyWith(fontWeight: FontWeight.bold),
               ),
               const SizedBox(height: 8),
               // Например, DropdownButton или IconButton для открытия карты/списка
               Container(
-                padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
                 decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.textHint.withValues(alpha: 0.5)),
+                  border: Border.all(
+                      color: AppColors.textHint.withValues(alpha: 0.5)),
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text('Выбрать пункт выдачи...', style: AppTextStyles.bodyText.copyWith(color: AppColors.textHint)),
+                    Text('Выбрать пункт выдачи...',
+                        style: AppTextStyles.bodyText
+                            .copyWith(color: AppColors.textHint)),
                     const Icon(Icons.location_on, color: AppColors.textHint),
                   ],
                 ),
@@ -157,7 +182,8 @@ class _BasketPageState extends State<BasketPage> {
               TextButton.icon(
                 onPressed: _deleteSelectedItems,
                 icon: const Icon(Icons.delete_outline, color: Colors.grey),
-                label: Text('Удалить выбранные', style: AppTextStyles.bodyText.copyWith(color: Colors.grey)),
+                label: Text('Удалить выбранные',
+                    style: AppTextStyles.bodyText.copyWith(color: Colors.grey)),
               ),
             ],
           ),
@@ -170,7 +196,8 @@ class _BasketPageState extends State<BasketPage> {
             itemBuilder: (context, index) {
               final item = _cartItems[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Row(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
@@ -189,7 +216,8 @@ class _BasketPageState extends State<BasketPage> {
                         borderRadius: BorderRadius.circular(8),
                       ),
                       child: Center(
-                        child: Image.asset("lib/res/icons/tmc.png"), // Изображение товара
+                        child: Image.asset(
+                            "lib/res/icons/tmc.png"), // Изображение товара
                       ),
                     ),
                     const SizedBox(width: 16),
@@ -200,7 +228,8 @@ class _BasketPageState extends State<BasketPage> {
                         children: [
                           Text(
                             item.product.name,
-                            style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold),
+                            style: AppTextStyles.bodyText
+                                .copyWith(fontWeight: FontWeight.bold),
                             maxLines: 2,
                             overflow: TextOverflow.ellipsis,
                           ),
@@ -211,41 +240,51 @@ class _BasketPageState extends State<BasketPage> {
                             children: [
                               Container(
                                 decoration: BoxDecoration(
-                                  color: AppColors.success.withValues(alpha:0.1),
+                                  color:
+                                      AppColors.success.withValues(alpha: 0.1),
                                   borderRadius: BorderRadius.circular(5),
                                   border: Border.all(color: AppColors.success),
                                 ),
-                                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 6, vertical: 2),
                                 child: Row(
                                   children: [
                                     GestureDetector(
                                       onTap: () => _updateQuantity(index, -1),
-                                      child: Icon(Icons.remove, size: 16, color: AppColors.success),
+                                      child: Icon(Icons.remove,
+                                          size: 16, color: AppColors.success),
                                     ),
-                                    Text(' ${item.quantity} ', style: AppTextStyles.bodyText.copyWith(color: AppColors.success)),
+                                    Text(' ${item.quantity} ',
+                                        style: AppTextStyles.bodyText.copyWith(
+                                            color: AppColors.success)),
                                     GestureDetector(
                                       onTap: () => _updateQuantity(index, 1),
-                                      child: Icon(Icons.add, size: 16, color: AppColors.success),
+                                      child: Icon(Icons.add,
+                                          size: 16, color: AppColors.success),
                                     ),
                                   ],
                                 ),
                               ),
                               Text(
                                 item.product.price,
-                                style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold),
+                                style: AppTextStyles.bodyText
+                                    .copyWith(fontWeight: FontWeight.bold),
                               ),
                             ],
                           ),
-                          if (item.requiresPrescription) // Показываем, если нужен рецепт
+                          if (item
+                              .requiresPrescription) // Показываем, если нужен рецепт
                             Padding(
                               padding: const EdgeInsets.only(top: 8.0),
                               child: Row(
                                 children: [
-                                  const Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 16),
+                                  const Icon(Icons.warning_amber_rounded,
+                                      color: AppColors.warning, size: 16),
                                   const SizedBox(width: 4),
                                   Text(
                                     'Товар отпускается по рецепту',
-                                    style: AppTextStyles.hintText.copyWith(color: AppColors.warning),
+                                    style: AppTextStyles.hintText
+                                        .copyWith(color: AppColors.warning),
                                   ),
                                 ],
                               ),
@@ -264,7 +303,8 @@ class _BasketPageState extends State<BasketPage> {
         Container(
           padding: const EdgeInsets.all(16.0),
           decoration: BoxDecoration(
-            color: Theme.of(context).scaffoldBackgroundColor, // Используем цвет фона Scaffold
+            color: Theme.of(context)
+                .scaffoldBackgroundColor, // Используем цвет фона Scaffold
             boxShadow: [
               BoxShadow(
                 color: Colors.grey.withValues(alpha: 0.2),
@@ -274,7 +314,8 @@ class _BasketPageState extends State<BasketPage> {
               ),
             ],
           ),
-          child: SafeArea( // Чтобы не залезать под системные UI-элементы
+          child: SafeArea(
+            // Чтобы не залезать под системные UI-элементы
             child: Row(
               children: [
                 Expanded(
@@ -288,8 +329,7 @@ class _BasketPageState extends State<BasketPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Order(
-                          ),
+                          builder: (context) => Order(),
                         ),
                       );
                     },
@@ -312,7 +352,8 @@ class _BasketPageState extends State<BasketPage> {
                   _calculateTotalPrice(),
                   style: AppTextStyles.headline.copyWith(
                     fontWeight: FontWeight.bold,
-                    color: AppColors.textPrimary, // Или AppColors.success, если сумма зеленая
+                    color: AppColors
+                        .textPrimary, // Или AppColors.success, если сумма зеленая
                   ),
                 ),
               ],

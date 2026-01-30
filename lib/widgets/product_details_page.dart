@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/theme/app_colors.dart';
-import 'package:pharmacy/res/styles/styles.dart'; 
-import 'package:pharmacy/view/search/search_page.dart';
+import 'package:pharmacy/res/styles/styles.dart';
+// import 'package:pharmacy/view/search/search_page.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final Product product;
@@ -13,7 +14,7 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  bool _isFavorite = false; 
+  bool _isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,10 +23,10 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
           onPressed: () {
-            Navigator.of(context).pop(); 
+            Navigator.of(context).pop();
           },
         ),
-        title: const Text('Страница товара'), 
+        title: const Text('Страница товара'),
         centerTitle: true,
       ),
       body: SingleChildScrollView(
@@ -36,8 +37,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Image.asset( 
-                  "lib/res/icons/tmc2.png", 
+                child: Image.asset(
+                  "lib/res/icons/tmc2.png",
                   width: 400,
                   height: 400,
                 ),
@@ -48,7 +49,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
                 widget.product.name,
-                style: AppTextStyles.headline.copyWith(fontSize: 22, fontWeight: FontWeight.bold),
+                style: AppTextStyles.headline
+                    .copyWith(fontSize: 22, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
               ),
             ),
@@ -62,9 +64,12 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                   const SizedBox(width: 16),
                   Text(
                     widget.product.price.split(' ')[0],
-                    style: AppTextStyles.headline.copyWith(fontSize: 24, fontWeight: FontWeight.bold),
+                    style: AppTextStyles.headline
+                        .copyWith(fontSize: 24, fontWeight: FontWeight.bold),
                   ),
-                  const SizedBox(width: 8.0), // Маленький отступ между числом и значком рубля
+                  const SizedBox(
+                      width:
+                          8.0), // Маленький отступ между числом и значком рубля
                   // Значок красного рубля
                   Image.asset(
                     'lib/res/icons/valutRu.png',
@@ -73,7 +78,8 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                     color: AppColors.error, // Красный цвет для иконки
                   ),
                   const SizedBox(width: 64),
-                  if (widget.product.oldPrice.isNotEmpty) // Показываем старую цену, если она есть
+                  if (widget.product.oldPrice
+                      .isNotEmpty) // Показываем старую цену, если она есть
                     Text(
                       widget.product.oldPrice,
                       style: AppTextStyles.bodyText.copyWith(
@@ -83,30 +89,36 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                     ),
                   const SizedBox(width: 8),
-                  if (widget.product.isNew) // Если товар акционный, показываем скидку (пример)
+                  if (widget.product
+                      .isNew) // Если товар акционный, показываем скидку (пример)
                     Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 6, vertical: 2),
                       decoration: BoxDecoration(
                         color: AppColors.error,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text('-25%', style: AppTextStyles.bodyText.copyWith(color: Colors.white, fontSize: 12)),
+                      child: Text('-25%',
+                          style: AppTextStyles.bodyText
+                              .copyWith(color: Colors.white, fontSize: 12)),
                     )
                 ],
               ),
             ),
             const SizedBox(height: 16),
             // "Товар отпускается по рецепту" (если applicable)
-            if (true) 
+            if (true)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 child: Row(
                   children: [
-                    const Icon(Icons.warning_amber_rounded, color: AppColors.textPrimary, size: 32),
+                    const Icon(Icons.warning_amber_rounded,
+                        color: AppColors.textPrimary, size: 32),
                     const SizedBox(width: 8),
                     Text(
                       'Товар отпускается по рецепту',
-                      style: AppTextStyles.bodyText.copyWith(color: AppColors.textPrimary),
+                      style: AppTextStyles.bodyText
+                          .copyWith(color: AppColors.textPrimary),
                     ),
                   ],
                 ),
@@ -128,9 +140,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
-
-                      },
+                      onPressed: () {},
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColors.success, // Зеленая кнопка
                         padding: const EdgeInsets.symmetric(vertical: 16),
@@ -152,7 +162,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       });
                     },
                     child: Image.asset(
-                      _isFavorite ? 'lib/res/icons/favorites_add.png' : 'lib/res/navigation_bar/image_favorites.png',
+                      _isFavorite
+                          ? 'lib/res/icons/favorites_add.png'
+                          : 'lib/res/navigation_bar/image_favorites.png',
                       width: 25,
                       height: 25,
                     ),

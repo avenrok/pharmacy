@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/widgets/product_card.dart';
-import 'package:pharmacy/view/search/search_page.dart'; 
-
-
+// import 'package:pharmacy/view/search/search_page.dart';
 
 class CategoryProductsPage extends StatelessWidget {
   final String categoryName;
@@ -11,12 +10,39 @@ class CategoryProductsPage extends StatelessWidget {
 
   // Пример товаров для категории
   final List<Product> _categoryProducts = [
-    Product(name: 'Название товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
-    Product(name: 'Название товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽', requiresPrescription: true),
-    Product(name: 'Название товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
-    Product(name: 'Название товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽', requiresPrescription: true),
-    Product(name: 'Название товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
-    Product(name: 'Название товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽', requiresPrescription: true),
+    Product(
+        name: 'Название товара',
+        price: '999,99 ₽',
+        oldPrice: '1 299,99 ₽',
+        id: 1),
+    Product(
+        name: 'Название товара',
+        price: '999,99 ₽',
+        oldPrice: '1 299,99 ₽',
+        requiresPrescription: true,
+        id: 2),
+    Product(
+        name: 'Название товара',
+        price: '999,99 ₽',
+        oldPrice: '1 299,99 ₽',
+        id: 3),
+    Product(
+        name: 'Название товара',
+        price: '999,99 ₽',
+        oldPrice: '1 299,99 ₽',
+        requiresPrescription: true,
+        id: 4),
+    Product(
+        name: 'Название товара',
+        price: '999,99 ₽',
+        oldPrice: '1 299,99 ₽',
+        id: 5),
+    Product(
+        name: 'Название товара',
+        price: '999,99 ₽',
+        oldPrice: '1 299,99 ₽',
+        requiresPrescription: true,
+        id: 6),
   ];
 
   @override
@@ -48,9 +74,9 @@ class CategoryProductsPage extends StatelessWidget {
           bool showActionStar = index % 2 == 0;
           return ProductCard(
             product: product,
-            isAction: showActionStar, // Передаем флаг для отображения красной звезды
-            isInCart: false, 
-           
+            isAction:
+                showActionStar, // Передаем флаг для отображения красной звезды
+            isInCart: false,
           );
         },
       ),

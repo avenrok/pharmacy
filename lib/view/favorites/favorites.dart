@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/theme/app_colors.dart';
-import 'package:pharmacy/res/styles/styles.dart'; 
-import 'package:pharmacy/view/search/search_page.dart'; 
+import 'package:pharmacy/res/styles/styles.dart';
+import 'package:pharmacy/view/search/search_page.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});
@@ -15,12 +16,22 @@ class _FavoritesState extends State<Favorites> {
   // В реальном приложении это будет из State Management
   final List<FavoriteItem> _favoriteItems = [
     FavoriteItem(
-      product: Product(name: 'Название товара в несколько строк, а также объем или штучность товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
+      product: Product(
+          name:
+              'Название товара в несколько строк, а также объем или штучность товара',
+          price: '999,99 ₽',
+          oldPrice: '1 299,99 ₽',
+          id: 1),
       quantity: 1,
       requiresPrescription: false,
     ),
     FavoriteItem(
-      product: Product(name: 'Название товара в несколько строк, а также объем или штучность товара', price: '999,99 ₽', oldPrice: '1 299,99 ₽'),
+      product: Product(
+          name:
+              'Название товара в несколько строк, а также объем или штучность товара',
+          price: '999,99 ₽',
+          oldPrice: '1 299,99 ₽',
+          id: 2),
       quantity: 1,
       requiresPrescription: true, // Пример товара по рецепту
     ),
@@ -30,7 +41,8 @@ class _FavoritesState extends State<Favorites> {
   void _updateQuantity(int index, int delta) {
     setState(() {
       int newQuantity = _favoriteItems[index].quantity + delta;
-      if (newQuantity > 0) { // Количество не может быть меньше 1
+      if (newQuantity > 0) {
+        // Количество не может быть меньше 1
         _favoriteItems[index].quantity = newQuantity;
       } else {
         // Если количество стало 0 или меньше, удаляем из избранного
@@ -53,7 +65,8 @@ class _FavoritesState extends State<Favorites> {
     // _favoriteItems.remove(item);
     // setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
-      SnackBar(content: Text('Товар "${item.product.name}" добавлен в корзину.')),
+      SnackBar(
+          content: Text('Товар "${item.product.name}" добавлен в корзину.')),
     );
   }
 
@@ -67,7 +80,8 @@ class _FavoritesState extends State<Favorites> {
             itemBuilder: (context, index) {
               final item = _favoriteItems[index];
               return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
                 child: Container(
                   decoration: BoxDecoration(
                     border: Border.all(color: Colors.grey[300]!),
@@ -80,7 +94,8 @@ class _FavoritesState extends State<Favorites> {
                     children: [
                       // Иконка звездочки "Избранное"
                       GestureDetector(
-                        onTap: () => _removeItem(index), // Нажатие на звезду - удаление из избранного
+                        onTap: () => _removeItem(
+                            index), // Нажатие на звезду - удаление из избранного
                         child: Image.asset(
                           'lib/res/icons/favorites_add.png', // Иконка заполненной звезды
                           width: 32, // Размер иконки
@@ -99,7 +114,8 @@ class _FavoritesState extends State<Favorites> {
                           borderRadius: BorderRadius.circular(8),
                         ),
                         child: Center(
-                          child: Image.asset("lib/res/icons/tmc.png"), // Изображение товара
+                          child: Image.asset(
+                              "lib/res/icons/tmc.png"), // Изображение товара
                         ),
                       ),
                       const SizedBox(width: 16),
@@ -110,7 +126,8 @@ class _FavoritesState extends State<Favorites> {
                           children: [
                             Text(
                               item.product.name,
-                              style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold),
+                              style: AppTextStyles.bodyText
+                                  .copyWith(fontWeight: FontWeight.bold),
                               maxLines: 2,
                               overflow: TextOverflow.ellipsis,
                             ),
@@ -121,41 +138,53 @@ class _FavoritesState extends State<Favorites> {
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: AppColors.success.withValues(alpha:0.1),
+                                    color: AppColors.success
+                                        .withValues(alpha: 0.1),
                                     borderRadius: BorderRadius.circular(5),
-                                    border: Border.all(color: AppColors.success),
+                                    border:
+                                        Border.all(color: AppColors.success),
                                   ),
-                                  padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 6, vertical: 2),
                                   child: Row(
                                     children: [
                                       GestureDetector(
                                         onTap: () => _updateQuantity(index, -1),
-                                        child: Icon(Icons.remove, size: 16, color: AppColors.success),
+                                        child: Icon(Icons.remove,
+                                            size: 16, color: AppColors.success),
                                       ),
-                                      Text(' ${item.quantity} ', style: AppTextStyles.bodyText.copyWith(color: AppColors.success)),
+                                      Text(' ${item.quantity} ',
+                                          style: AppTextStyles.bodyText
+                                              .copyWith(
+                                                  color: AppColors.success)),
                                       GestureDetector(
                                         onTap: () => _updateQuantity(index, 1),
-                                        child: Icon(Icons.add, size: 16, color: AppColors.success),
+                                        child: Icon(Icons.add,
+                                            size: 16, color: AppColors.success),
                                       ),
                                     ],
                                   ),
                                 ),
                                 Text(
                                   item.product.price,
-                                  style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold),
+                                  style: AppTextStyles.bodyText
+                                      .copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
-                            if (item.requiresPrescription) // Показываем, если нужен рецепт
+                            if (item
+                                .requiresPrescription) // Показываем, если нужен рецепт
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Row(
                                   children: [
-                                    const Icon(Icons.warning_amber_rounded, color: AppColors.warning, size: 16),
+                                    const Icon(Icons.warning_amber_rounded,
+                                        color: AppColors.warning, size: 16),
                                     const SizedBox(width: 4),
                                     Text(
                                       'Товар отпускается по рецепту',
-                                      style: AppTextStyles.hintText.copyWith(color: AppColors.warning),
+                                      style: AppTextStyles.hintText
+                                          .copyWith(color: AppColors.warning),
                                     ),
                                   ],
                                 ),
@@ -168,14 +197,17 @@ class _FavoritesState extends State<Favorites> {
                                 onPressed: () => _addToCart(item),
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor: AppColors.success,
-                                  padding: const EdgeInsets.symmetric(vertical: 8),
+                                  padding:
+                                      const EdgeInsets.symmetric(vertical: 8),
                                   shape: RoundedRectangleBorder(
                                     borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
                                 child: Text(
                                   'Добавить в корзину',
-                                  style: AppTextStyles.bodyText.copyWith(color: Colors.white), // Меньший размер шрифта для кнопки в списке
+                                  style: AppTextStyles.bodyText.copyWith(
+                                      color: Colors
+                                          .white), // Меньший размер шрифта для кнопки в списке
                                 ),
                               ),
                             ),
