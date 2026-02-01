@@ -1,8 +1,9 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/theme/app_colors.dart';
 import 'package:pharmacy/res/styles/styles.dart';
-// import 'package:pharmacy/view/search/search_page.dart';
+import 'package:pharmacy/data/product_api.dart';
 
 class ProductDetailsPage extends StatefulWidget {
   final Product product;
@@ -15,16 +16,60 @@ class ProductDetailsPage extends StatefulWidget {
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
   bool _isFavorite = false;
+  bool _isAddingToCart = false;
+
+  final ProductApi _api = ProductApi();
+
+  // Метод добавления товара в корзину
+  Future<void> _addToCart() async {
+    setState(() {
+      _isAddingToCart = true;
+    });
+
+    try {
+      await _api.addToCart(widget.product.id, quantity: 1);
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Товар добавлен в корзину!')),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Ошибка: $e')),
+      );
+    } finally {
+      if (mounted) {
+        setState(() {
+          _isAddingToCart = false;
+        });
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    final product = widget.product;
+
+    ImageProvider imageProvider;
+    if (product.imageBase64 != null && product.imageBase64!.isNotEmpty) {
+      try {
+        imageProvider = MemoryImage(base64Decode(product.imageBase64!));
+      } catch (_) {
+        imageProvider = const AssetImage('lib/res/icons/tmc2.png');
+      }
+    } else {
+      imageProvider = const AssetImage('lib/res/icons/tmc2.png');
+    }
+
+    String formatPrice(double price) =>
+        price.toStringAsFixed(2).replaceAll('.', ',');
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.white,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
+          onPressed: () => Navigator.of(context).pop(),
         ),
         title: const Text('Страница товара'),
         centerTitle: true,
@@ -33,14 +78,15 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Верхняя часть с изображением товара
+            // Изображение
             Center(
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
-                child: Image.asset(
-                  "lib/res/icons/tmc2.png",
+                child: Image(
+                  image: imageProvider,
                   width: 400,
                   height: 400,
+                  fit: BoxFit.contain,
                 ),
               ),
             ),
@@ -48,7 +94,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
-                widget.product.name,
+                product.name,
                 style: AppTextStyles.headline
                     .copyWith(fontSize: 22, fontWeight: FontWeight.bold),
                 textAlign: TextAlign.center,
@@ -59,29 +105,27 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.start, // Центрируем цены
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  const SizedBox(width: 16),
                   Text(
-                    widget.product.price.split(' ')[0],
-                    style: AppTextStyles.headline
-                        .copyWith(fontSize: 24, fontWeight: FontWeight.bold),
+                    formatPrice(product.price),
+                    style: AppTextStyles.headline.copyWith(
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      color: AppColors.error,
+                    ),
                   ),
-                  const SizedBox(
-                      width:
-                          8.0), // Маленький отступ между числом и значком рубля
-                  // Значок красного рубля
+                  const SizedBox(width: 4),
                   Image.asset(
                     'lib/res/icons/valutRu.png',
                     width: 25,
                     height: 25,
-                    color: AppColors.error, // Красный цвет для иконки
+                    color: AppColors.error,
                   ),
-                  const SizedBox(width: 64),
-                  if (widget.product.oldPrice
-                      .isNotEmpty) // Показываем старую цену, если она есть
+                  const SizedBox(width: 16),
+                  if (product.oldPrice != null)
                     Text(
-                      widget.product.oldPrice,
+                      formatPrice(product.oldPrice!),
                       style: AppTextStyles.bodyText.copyWith(
                         fontSize: 18,
                         decoration: TextDecoration.lineThrough,
@@ -89,8 +133,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       ),
                     ),
                   const SizedBox(width: 8),
-                  if (widget.product
-                      .isNew) // Если товар акционный, показываем скидку (пример)
+                  if (product.discountPercentage != null)
                     Container(
                       padding: const EdgeInsets.symmetric(
                           horizontal: 6, vertical: 2),
@@ -98,33 +141,34 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                         color: AppColors.error,
                         borderRadius: BorderRadius.circular(4),
                       ),
-                      child: Text('-25%',
-                          style: AppTextStyles.bodyText
-                              .copyWith(color: Colors.white, fontSize: 12)),
-                    )
+                      child: Text(
+                        '-${product.discountPercentage}%',
+                        style: AppTextStyles.bodyText
+                            .copyWith(color: Colors.white, fontSize: 12),
+                      ),
+                    ),
                 ],
               ),
             ),
             const SizedBox(height: 16),
-            // "Товар отпускается по рецепту" (если applicable)
-            if (true)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16.0),
-                child: Row(
-                  children: [
-                    const Icon(Icons.warning_amber_rounded,
-                        color: AppColors.textPrimary, size: 32),
-                    const SizedBox(width: 8),
-                    Text(
-                      'Товар отпускается по рецепту',
-                      style: AppTextStyles.bodyText
-                          .copyWith(color: AppColors.textPrimary),
-                    ),
-                  ],
-                ),
+            // Информация о рецепте
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
+              child: Row(
+                children: [
+                  const Icon(Icons.warning_amber_rounded,
+                      color: AppColors.textPrimary, size: 32),
+                  const SizedBox(width: 8),
+                  Text(
+                    'Товар отпускается по рецепту',
+                    style: AppTextStyles.bodyText
+                        .copyWith(color: AppColors.textPrimary),
+                  ),
+                ],
               ),
+            ),
             const SizedBox(height: 16),
-            // Подробное описание
+            // Описание товара
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Text(
@@ -133,25 +177,34 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
               ),
             ),
             const SizedBox(height: 64),
-            // Кнопка "Добавить товар в корзину" и звездочка "Избранное"
+            // Кнопка "Добавить в корзину" и избранное
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0),
               child: Row(
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: _isAddingToCart ? null : _addToCart,
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.success, // Зеленая кнопка
+                        backgroundColor: AppColors.success,
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(8.0),
                         ),
                       ),
-                      child: Text(
-                        'Добавить товар в корзину',
-                        style: AppTextStyles.buttonTextStyle,
-                      ),
+                      child: _isAddingToCart
+                          ? const SizedBox(
+                              height: 20,
+                              width: 20,
+                              child: CircularProgressIndicator(
+                                color: Colors.white,
+                                strokeWidth: 2,
+                              ),
+                            )
+                          : Text(
+                              'Добавить товар в корзину',
+                              style: AppTextStyles.buttonTextStyle,
+                            ),
                     ),
                   ),
                   const SizedBox(width: 16),

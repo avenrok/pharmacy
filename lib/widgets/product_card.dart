@@ -1,111 +1,86 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:pharmacy/models/product.dart';
-// import 'package:pharmacy/view/search/search_page.dart';
-import 'package:pharmacy/theme/app_colors.dart';
 import 'package:pharmacy/res/styles/styles.dart';
+import 'package:pharmacy/theme/app_colors.dart';
 import 'package:pharmacy/widgets/product_details_page.dart';
 
 class ProductCard extends StatelessWidget {
   final Product product;
-  final bool isAction;
   final bool isInCart;
 
-  const ProductCard({
-    super.key,
-    required this.product,
-    this.isAction = false,
-    this.isInCart = false, // По умолчанию false
-  });
+  const ProductCard({super.key, required this.product, this.isInCart = false, required });
 
   @override
   Widget build(BuildContext context) {
+    final priceFormatter = NumberFormat.currency(locale: 'ru_RU', symbol: '₽', decimalDigits: 0);
+
+    Widget productImage() {
+      if (product.imageBase64 != null && product.imageBase64!.isNotEmpty) {
+        try {
+          final bytes = base64Decode(product.imageBase64!);
+          return Image.memory(bytes, width: 150, height: 150, fit: BoxFit.contain);
+        } catch (_) {}
+      }
+      return Image.asset('lib/res/icons/tmc.png', width: 150, height: 150);
+    }
+
     return Card(
-        elevation: 0,
-        color: Colors.white,
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(8.0),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+      child: InkWell(
+        borderRadius: BorderRadius.circular(8),
+        onTap: () => Navigator.push(
+          context,
+          MaterialPageRoute(builder: (_) => ProductDetailsPage(product: product)),
         ),
-        child: InkWell(
-          onTap: () {
-            // Навигация к странице деталей товара
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => ProductDetailsPage(product: product),
-              ),
-            );
-          },
-          borderRadius: BorderRadius.circular(8.0),
-          child: Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.stretch,
-              children: [
-                // Место для изображения товара
-                Expanded(
-                  child: Container(
-                    color: Colors.white,
-                    child: Center(
-                      child: Image.asset(
-                        'lib/res/icons/tmc.png',
-                        width: 150,
-                        height: 150,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(height: 8.0),
-                // Название товара
-                Text(
-                  product.name,
-                  textAlign:
-                      TextAlign.center, // Выравнивание названия по центру
-                  style: AppTextStyles.bodyText
-                      .copyWith(fontWeight: FontWeight.bold),
-                  maxLines: 2,
-                  overflow: TextOverflow.ellipsis,
-                ),
-                const SizedBox(height: 4.0),
-                // Цены: Теперь в Row для расположения рядом
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
+        child: Padding(
+          padding: const EdgeInsets.all(8),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              SizedBox(
+                height: 150,
+                child: Stack(
                   children: [
-                    Text(
-                      // Убираем ' ₽' из строки цены для раздельного отображения числа и значка
-                      product.price.split(' ')[0],
-                      style: AppTextStyles.headline.copyWith(
-                        fontWeight: FontWeight.bold,
-                        color: AppColors.error,
-                      ),
-                    ),
-                    const SizedBox(
-                        width:
-                            2.0), // Маленький отступ между числом и значком рубля
-                    // Значок красного рубля
-                    Image.asset(
-                      'lib/res/icons/valutRu.png',
-                      width: 14,
-                      height: 14,
-                      color: AppColors.error, // Красный цвет для иконки
-                    ),
-                    // Отступ между основной и старой ценой
-                    if (product.oldPrice.isNotEmpty) const SizedBox(width: 8.0),
-                    // Старая цена
-                    if (product.oldPrice.isNotEmpty)
-                      Text(
-                        product.oldPrice,
-                        style: AppTextStyles.caption.copyWith(
-                          decoration: TextDecoration.lineThrough,
-                          color: Colors.grey, // Цвет для перечеркнутой цены
+                    Center(child: productImage()),
+                    if (product.isActionProduct)
+                      Positioned(
+                        top: 0,
+                        left: 0,
+                        child: Container(
+                          padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
+                          decoration: BoxDecoration(
+                            color: AppColors.error,
+                            borderRadius: const BorderRadius.only(
+                              topLeft: Radius.circular(8),
+                              bottomRight: Radius.circular(8),
+                            ),
+                          ),
+                          child: const Text('Акция', style: TextStyle(color: Colors.white, fontSize: 12, fontWeight: FontWeight.bold)),
                         ),
                       ),
                   ],
                 ),
-                // Пространство для других элементов или просто отступ снизу
-                const SizedBox(height: 8.0),
-              ],
-            ),
+              ),
+              const SizedBox(height: 8),
+              Text(product.name, textAlign: TextAlign.center, style: AppTextStyles.bodyText.copyWith(fontWeight: FontWeight.bold), maxLines: 2, overflow: TextOverflow.ellipsis),
+              const SizedBox(height: 4),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text(priceFormatter.format(product.price), style: AppTextStyles.headline.copyWith(fontWeight: FontWeight.bold, color: AppColors.error)),
+                  if (product.oldPrice != null) const SizedBox(width: 8),
+                  if (product.oldPrice != null)
+                    Text(priceFormatter.format(product.oldPrice!), style: AppTextStyles.caption.copyWith(decoration: TextDecoration.lineThrough, color: Colors.grey)),
+                ],
+              ),
+              const SizedBox(height: 8),
+              if (isInCart) Align(alignment: Alignment.center, child: Icon(Icons.shopping_cart, color: AppColors.textPrimary, size: 20)),
+            ],
           ),
-        ));
+        ),
+      ),
+    );
   }
 }

@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/widgets/product_card.dart';
-// import 'package:pharmacy/view/search/search_page.dart';
 
 class CategoryProductsPage extends StatelessWidget {
   final String categoryName;
@@ -11,38 +10,16 @@ class CategoryProductsPage extends StatelessWidget {
   // Пример товаров для категории
   final List<Product> _categoryProducts = [
     Product(
+        id: 1,
         name: 'Название товара',
-        price: '999,99 ₽',
-        oldPrice: '1 299,99 ₽',
-        id: 1),
-    Product(
-        name: 'Название товара',
-        price: '999,99 ₽',
-        oldPrice: '1 299,99 ₽',
-        requiresPrescription: true,
-        id: 2),
-    Product(
-        name: 'Название товара',
-        price: '999,99 ₽',
-        oldPrice: '1 299,99 ₽',
-        id: 3),
-    Product(
-        name: 'Название товара',
-        price: '999,99 ₽',
-        oldPrice: '1 299,99 ₽',
-        requiresPrescription: true,
-        id: 4),
-    Product(
-        name: 'Название товара',
-        price: '999,99 ₽',
-        oldPrice: '1 299,99 ₽',
-        id: 5),
-    Product(
-        name: 'Название товара',
-        price: '999,99 ₽',
-        oldPrice: '1 299,99 ₽',
-        requiresPrescription: true,
-        id: 6),
+        price: 999.99,
+        oldPrice: 1299.99,
+        isActionProduct: true),
+    Product(id: 2, name: 'Название товара', price: 999.99, oldPrice: 1299.99),
+    Product(id: 3, name: 'Название товара', price: 999.99),
+    Product(id: 4, name: 'Название товара', price: 999.99, oldPrice: 1299.99),
+    Product(id: 5, name: 'Название товара', price: 999.99),
+    Product(id: 6, name: 'Название товара', price: 999.99, oldPrice: 1299.99),
   ];
 
   @override
@@ -54,9 +31,7 @@ class CategoryProductsPage extends StatelessWidget {
         centerTitle: true,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back),
-          onPressed: () {
-            Navigator.of(context).pop(); // Возврат на страницу категорий
-          },
+          onPressed: () => Navigator.of(context).pop(),
         ),
       ),
       body: GridView.builder(
@@ -65,17 +40,13 @@ class CategoryProductsPage extends StatelessWidget {
           crossAxisCount: 2,
           crossAxisSpacing: 16.0,
           mainAxisSpacing: 16.0,
-          childAspectRatio: 0.75, // Соотношение сторон для карточек
+          childAspectRatio: 0.75,
         ),
         itemCount: _categoryProducts.length,
         itemBuilder: (context, index) {
           final product = _categoryProducts[index];
-          // Каждая вторая карточка будет акционной для демонстрации красной звезды
-          bool showActionStar = index % 2 == 0;
           return ProductCard(
             product: product,
-            isAction:
-                showActionStar, // Передаем флаг для отображения красной звезды
             isInCart: false,
           );
         },

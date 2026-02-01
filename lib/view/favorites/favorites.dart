@@ -1,8 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:pharmacy/models/product.dart';
 import 'package:pharmacy/theme/app_colors.dart';
 import 'package:pharmacy/res/styles/styles.dart';
-// import 'package:pharmacy/view/search/search_page.dart';
 
 class Favorites extends StatefulWidget {
   const Favorites({super.key});
@@ -12,63 +12,45 @@ class Favorites extends StatefulWidget {
 }
 
 class _FavoritesState extends State<Favorites> {
-  // Список избранных товаров (пример данных)
-  // В реальном приложении это будет из State Management
   final List<FavoriteItem> _favoriteItems = [
     FavoriteItem(
       product: Product(
-          name:
-              'Название товара в несколько строк, а также объем или штучность товара',
-          price: '999,99 ₽',
-          oldPrice: '1 299,99 ₽',
-          id: 1),
+          id: 1, name: 'Название товара', price: 999.99, oldPrice: 1299.99),
       quantity: 1,
       requiresPrescription: false,
     ),
     FavoriteItem(
       product: Product(
-          name:
-              'Название товара в несколько строк, а также объем или штучность товара',
-          price: '999,99 ₽',
-          oldPrice: '1 299,99 ₽',
-          id: 2),
+          id: 2, name: 'Название товара', price: 999.99, oldPrice: 1299.99),
       quantity: 1,
-      requiresPrescription: true, // Пример товара по рецепту
+      requiresPrescription: true,
     ),
   ];
 
-  // Метод для изменения количества товара
   void _updateQuantity(int index, int delta) {
     setState(() {
       int newQuantity = _favoriteItems[index].quantity + delta;
       if (newQuantity > 0) {
-        // Количество не может быть меньше 1
         _favoriteItems[index].quantity = newQuantity;
       } else {
-        // Если количество стало 0 или меньше, удаляем из избранного
         _favoriteItems.removeAt(index);
       }
     });
   }
 
-  // Метод для удаления товара из избранного
   void _removeItem(int index) {
-    setState(() {
-      _favoriteItems.removeAt(index);
-    });
+    setState(() => _favoriteItems.removeAt(index));
   }
 
-  // Метод для добавления товара в корзину из избранного
   void _addToCart(FavoriteItem item) {
-    // print('Добавить ${item.product.name} (${item.quantity} шт.) в корзину');
-    // Опционально: можно удалить товар из избранного после добавления в корзину
-    // _favoriteItems.remove(item);
-    // setState(() {});
     ScaffoldMessenger.of(context).showSnackBar(
       SnackBar(
           content: Text('Товар "${item.product.name}" добавлен в корзину.')),
     );
   }
+
+  String formatPrice(double price) =>
+      price.toStringAsFixed(2).replaceAll('.', ',');
 
   @override
   Widget build(BuildContext context) {
@@ -79,6 +61,17 @@ class _FavoritesState extends State<Favorites> {
             itemCount: _favoriteItems.length,
             itemBuilder: (context, index) {
               final item = _favoriteItems[index];
+
+              ImageProvider imageProvider =
+                  const AssetImage('lib/res/icons/tmc.png');
+              if (item.product.imageBase64 != null &&
+                  item.product.imageBase64!.isNotEmpty) {
+                try {
+                  imageProvider =
+                      MemoryImage(base64Decode(item.product.imageBase64!));
+                } catch (_) {}
+              }
+
               return Padding(
                 padding:
                     const EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0),
@@ -92,20 +85,15 @@ class _FavoritesState extends State<Favorites> {
                   child: Row(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      // Иконка звездочки "Избранное"
                       GestureDetector(
-                        onTap: () => _removeItem(
-                            index), // Нажатие на звезду - удаление из избранного
+                        onTap: () => _removeItem(index),
                         child: Image.asset(
-                          'lib/res/icons/favorites_add.png', // Иконка заполненной звезды
-                          width: 32, // Размер иконки
+                          'lib/res/icons/favorites_add.png',
+                          width: 32,
                           height: 32,
-                          // Если нужно изменить цвет
-                          // colorFilter: ColorFilter.mode(AppColors.textSecondary, BlendMode.srcIn),
                         ),
                       ),
                       const SizedBox(width: 8),
-                      // Изображение товара
                       Container(
                         width: 80,
                         height: 80,
@@ -113,13 +101,9 @@ class _FavoritesState extends State<Favorites> {
                           border: Border.all(color: AppColors.success),
                           borderRadius: BorderRadius.circular(8),
                         ),
-                        child: Center(
-                          child: Image.asset(
-                              "lib/res/icons/tmc.png"), // Изображение товара
-                        ),
+                        child: Image(image: imageProvider),
                       ),
                       const SizedBox(width: 16),
-                      // Детали товара
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -132,14 +116,12 @@ class _FavoritesState extends State<Favorites> {
                               overflow: TextOverflow.ellipsis,
                             ),
                             const SizedBox(height: 8),
-                            // Количество и цена
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 Container(
                                   decoration: BoxDecoration(
-                                    color: AppColors.success
-                                        .withValues(alpha: 0.1),
+                                    color: AppColors.success.withOpacity(0.1),
                                     borderRadius: BorderRadius.circular(5),
                                     border:
                                         Border.all(color: AppColors.success),
@@ -166,14 +148,13 @@ class _FavoritesState extends State<Favorites> {
                                   ),
                                 ),
                                 Text(
-                                  item.product.price,
+                                  formatPrice(item.product.price),
                                   style: AppTextStyles.bodyText
                                       .copyWith(fontWeight: FontWeight.bold),
                                 ),
                               ],
                             ),
-                            if (item
-                                .requiresPrescription) // Показываем, если нужен рецепт
+                            if (item.requiresPrescription)
                               Padding(
                                 padding: const EdgeInsets.only(top: 8.0),
                                 child: Row(
@@ -190,7 +171,6 @@ class _FavoritesState extends State<Favorites> {
                                 ),
                               ),
                             const SizedBox(height: 8),
-                            // Кнопка "Добавить в корзину"
                             SizedBox(
                               width: double.infinity,
                               child: ElevatedButton(
@@ -205,9 +185,8 @@ class _FavoritesState extends State<Favorites> {
                                 ),
                                 child: Text(
                                   'Добавить в корзину',
-                                  style: AppTextStyles.bodyText.copyWith(
-                                      color: Colors
-                                          .white), // Меньший размер шрифта для кнопки в списке
+                                  style: AppTextStyles.bodyText
+                                      .copyWith(color: Colors.white),
                                 ),
                               ),
                             ),
@@ -226,7 +205,6 @@ class _FavoritesState extends State<Favorites> {
   }
 }
 
-// Вспомогательный класс для элемента избранного
 class FavoriteItem {
   final Product product;
   int quantity;
