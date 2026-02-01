@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import 'package:pharmacy/res/styles/styles.dart';
 import 'package:pharmacy/theme/app_colors.dart';

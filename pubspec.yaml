@@ -13,7 +13,8 @@ dependencies:
   flutter_localizations:
     sdk: flutter
   http: ^1.6.0
-  flutter_dotenv: ^5.1.0
+  flutter_dotenv: ^6.0.0
+  intl: ^0.20.2
 
 dev_dependencies:
   flutter_test:
@@ -49,6 +50,8 @@ flutter:
     - lib/res/icons/image_notification.png
     - lib/res/icons/favorites_add.png
     - lib/res/icons/tmc2.png
+    - .env
+
 
 
   fonts:

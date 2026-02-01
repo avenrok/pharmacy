@@ -52,7 +52,9 @@ class _BasketPageState extends State<BasketPage> {
   void _toggleSelectAll(bool? value) {
     setState(() {
       _selectAll = value ?? false;
-      for (var item in _cartItems) item.isSelected = _selectAll;
+      for (var item in _cartItems) {
+        item.isSelected = _selectAll;
+      }
     });
   }
 
@@ -92,10 +94,6 @@ class _BasketPageState extends State<BasketPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Корзина'),
-        centerTitle: true,
-      ),
       body: Column(
         children: [
           // Выбор пункта выдачи
